@@ -1,0 +1,26 @@
+{
+  "name": "ts-localstorage",
+  "version": "1.0.0",
+  "description": "Typed wrapper around the localstorage api.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ciriousjoker/ts-localstorage.git"
+  },
+  "keywords": [
+    "localstorage",
+    "typescript",
+    "ts",
+    "local",
+    "storage"
+  ],
+  "author": "ciriousjoker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ciriousjoker/ts-localstorage/issues"
+  },
+  "homepage": "https://github.com/ciriousjoker/ts-localstorage#readme"
+}
