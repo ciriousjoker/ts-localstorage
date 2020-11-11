@@ -1,6 +1,6 @@
 {
   "name": "ts-localstorage",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Typed wrapper around the localstorage api.",
   "main": "index.ts",
   "scripts": {
