@@ -133,10 +133,7 @@ describe("setItem, getItem, removeItem", () => {
   });
 
   test("BasicObject", async () => {
-    const keyBasicObject = new LocalKey("keyBasicObject", {
-      someBoolean: false,
-      someString: "some string 1"
-    } as BasicObject);
+    const keyBasicObject = new LocalKey<BasicObject>("keyBasicObject", null);
 
     expect(LocalStorage.getItem(keyBasicObject)).toBe(null);
 
@@ -150,7 +147,6 @@ describe("setItem, getItem, removeItem", () => {
     LocalStorage.removeItem(keyBasicObject);
     expect(LocalStorage.getItem(keyBasicObject)).toBe(null);
   });
-
 
   test("ClassInstance with custom converter", async () => {
     const keyClassInstance = new LocalKey("keyClassInstance", new ClassInstance("", false), {
@@ -384,7 +380,7 @@ describe("Edge cases", () => {
   test("Throw if storing function", async () => {
     expect(() => new LocalKey<Function>("keyFunction", () => undefined)).toThrow();
   });
-  
+
   test("Storing null or undefined should remove the key instead", async () => {
     const key = new LocalKey<string | null | undefined>("keyString", "");
 
