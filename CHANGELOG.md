@@ -1,3 +1,12 @@
+## [3.0.0] - 2023-05-31
+
+- Improve tree shaking with webpack (https://webpack.js.org/guides/tree-shaking/)
+- Improved internal project structure
+
+**BREAKING:**
+
+- This package is now a pure ESM package. You can no longer use `require()` to import it.
+
 ## [2.0.0] - 2022-03-15
 
 - Feature: custom converters
