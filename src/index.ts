@@ -5,7 +5,7 @@ const _: Storage = undefined;
 class LocalStorageAssertionError extends Error {
   constructor(message?: string) {
     super(message);
-    this.name = 'LocalStorageAssertionError';
+    this.name = "LocalStorageAssertionError";
   }
 }
 
@@ -58,7 +58,10 @@ export class LocalKey<T = unknown> {
     /** Additional parameters. */
     params?: LocalKeyParams<T>
   ) {
-    assert(typeof sampleValue !== "function", "Serializing functions to localStorage is forbidden since you could only get them back using eval().");
+    assert(
+      typeof sampleValue !== "function",
+      "Serializing functions to localStorage is forbidden since you could only get them back using eval()."
+    );
 
     this.hasDefaultValue = params?.hasDefaultValue ?? this.hasDefaultValue;
 
@@ -96,7 +99,7 @@ export class LocalKey<T = unknown> {
 
     // Use stringify() as a last resort.
     return JSON.stringify(value);
-  }
+  };
 
   public readonly fromStorage = (value: string): T => {
     const type = typeof this.sampleValue;
@@ -119,7 +122,7 @@ export class LocalKey<T = unknown> {
 
     // Use parse() as a last resort.
     return JSON.parse(value);
-  }
+  };
 }
 
 /**
@@ -129,12 +132,11 @@ export class LocalKey<T = unknown> {
  */
 function setItem<T>(key: LocalKey<T>, value: T | null | undefined) {
   if (value === null || value === undefined) {
-    LocalStorage.removeItem(key);
+    removeItem(key);
     return;
   }
   const stringified = key.toStorage(value);
   return localStorage.setItem(key.key, stringified);
-
 }
 
 /**
@@ -145,7 +147,7 @@ function getItem<T>(key: LocalKey<T>): T | null {
   if (result === null || result === undefined) {
     if (key.hasDefaultValue) return key.sampleValue;
     return null;
-  };
+  }
 
   return key.fromStorage(result) as T;
 }
@@ -186,7 +188,7 @@ function length(): number {
  * @param message The error message if the assertion fails.
  */
 function assert(check: boolean, message?: string): asserts check {
-  console.assert(check, message)
+  console.assert(check, message);
   if (!check) throw new LocalStorageAssertionError(message);
 }
 
