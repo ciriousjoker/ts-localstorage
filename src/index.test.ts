@@ -1,4 +1,4 @@
-import { LocalKey, LocalStorage } from "../src";
+import { LocalKey, LocalStorage } from "./index";
 
 interface BasicObject {
   someString: string;

@@ -1,5 +1,5 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-module.exports = {
+export default {
   preset: "ts-jest",
   testEnvironment: "node",
   coverageReporters: ["json-summary", "text", "lcov"],
@@ -7,5 +7,5 @@ module.exports = {
 
   // This is necessary or the tests won't run
   resetMocks: false,
-  setupFiles: ["jest-localstorage-mock"],
+  setupFiles: ["jest-localstorage-mock"]
 };
