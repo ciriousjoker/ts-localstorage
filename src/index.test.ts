@@ -6,10 +6,14 @@ interface BasicObject {
 }
 
 class ClassInstance implements BasicObject {
-  constructor(public someString: string, public someBoolean: boolean) { }
+  constructor(public someString: string, public someBoolean: boolean) {}
 
-  public get someGetter() { return this.someBoolean; }
-  public someFunction() { return this.someString; }
+  public get someGetter() {
+    return this.someBoolean;
+  }
+  public someFunction() {
+    return this.someString;
+  }
 }
 
 describe("setItem, getItem, removeItem", () => {
@@ -67,9 +71,9 @@ describe("setItem, getItem, removeItem", () => {
     expect(value1?.valueOf()).toEqual(0.1);
     expect(value1 instanceof Number).toBe(true);
 
-    LocalStorage.setItem(keyNumberObject, new Number(1.1e+5));
+    LocalStorage.setItem(keyNumberObject, new Number(1.1e5));
     const value2 = LocalStorage.getItem(keyNumberObject);
-    expect(value2?.valueOf()).toEqual(1.1e+5);
+    expect(value2?.valueOf()).toEqual(1.1e5);
     expect(value2 instanceof Number).toBe(true);
 
     LocalStorage.removeItem(keyNumberObject);
@@ -139,7 +143,7 @@ describe("setItem, getItem, removeItem", () => {
 
     const obj: BasicObject = {
       someBoolean: true,
-      someString: "some string 2"
+      someString: "some string 2",
     };
     LocalStorage.setItem(keyBasicObject, obj);
     expect(LocalStorage.getItem(keyBasicObject)).toEqual(obj);
@@ -159,7 +163,7 @@ describe("setItem, getItem, removeItem", () => {
       fromStorage: (value: string): ClassInstance => {
         const parsed = JSON.parse(value) as BasicObject;
         return new ClassInstance(parsed.someString, parsed.someBoolean);
-      }
+      },
     });
 
     expect(LocalStorage.getItem(keyClassInstance)).toBe(null);
@@ -294,18 +298,22 @@ describe("default value", () => {
   });
 
   test("BasicObject", async () => {
-    const key = new LocalKey("keyBasicObject", {
+    const key = new LocalKey(
+      "keyBasicObject",
+      {
       someBoolean: true,
       someString: "some string 1",
-    } as BasicObject, {
+      } as BasicObject,
+      {
       hasDefaultValue: true,
-    });
+      }
+    );
 
     expect(LocalStorage.getItem(key)).toStrictEqual(key.sampleValue);
 
     const obj: BasicObject = {
       someBoolean: false,
-      someString: "some string 3"
+      someString: "some string 3",
     };
     LocalStorage.setItem(key, obj);
     expect(LocalStorage.getItem(key)).toEqual(obj);
@@ -313,7 +321,6 @@ describe("default value", () => {
     LocalStorage.removeItem(key);
     expect(LocalStorage.getItem(key)).toStrictEqual(key.sampleValue);
   });
-
 
   test("ClassInstance with custom converter", async () => {
     const key = new LocalKey("keyClassInstance", new ClassInstance("a", true), {
