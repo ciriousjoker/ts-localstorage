@@ -9,7 +9,7 @@ class LocalStorageAssertionError extends Error {
   }
 }
 
-interface LocalKeyParams<T = unknown> {
+interface LocalKeyParams<T, HasDefaultValue = number> {
   /**
    * If true, the `sampleValue` will be used as the default value
    * if the key is not found in localStorage.
@@ -17,7 +17,7 @@ interface LocalKeyParams<T = unknown> {
    * If false, the `sampleValue` will be ignored.
    * Defaults to false.
    */
-  hasDefaultValue?: boolean;
+  hasDefaultValue?: HasDefaultValue;
 
   /**
    * Custom converter to serialize objects stored in the localStorage.
@@ -40,7 +40,7 @@ interface LocalKeyParams<T = unknown> {
  * ```
  * More info: https://www.npmjs.com/package/ts-localstorage
  */
-export class LocalKey<T = unknown> {
+export class LocalKey<T, UseDefaultIfNull extends boolean = false> {
   public readonly hasDefaultValue: boolean = false;
   public readonly hasCustomConverter: boolean = false;
 
@@ -56,7 +56,7 @@ export class LocalKey<T = unknown> {
     public readonly sampleValue: T | null,
 
     /** Additional parameters. */
-    params?: LocalKeyParams<T>
+    params?: LocalKeyParams<T, UseDefaultIfNull>
   ) {
     assert(
       typeof sampleValue !== "function",
@@ -130,7 +130,7 @@ export class LocalKey<T = unknown> {
  *
  * Throws a "QuotaExceededError" DOMException exception if the new value couldn't be set. (Setting could fail if, e.g., the user has disabled storage for the site, or if the quota has been exceeded.)
  */
-function setItem<T>(key: LocalKey<T>, value: T | null | undefined) {
+function setItem<T, UseDefaultIfNull extends boolean>(key: LocalKey<T, UseDefaultIfNull>, value: T | null | undefined) {
   if (value === null || value === undefined) {
     removeItem(key);
     return;
@@ -142,11 +142,15 @@ function setItem<T>(key: LocalKey<T>, value: T | null | undefined) {
 /**
  * Returns the current value associated with the given key, or null if the given key does not exist in the list associated with the object.
  */
-function getItem<T>(key: LocalKey<T>): T | null {
+function getItem<T, UseDefaultIfNull extends boolean>(
+  key: LocalKey<T, UseDefaultIfNull>
+): UseDefaultIfNull extends true ? T : T | null {
+  type ReturnType = UseDefaultIfNull extends true ? T : T | null;
+
   const result = localStorage.getItem(key.key);
   if (result === null || result === undefined) {
-    if (key.hasDefaultValue) return key.sampleValue;
-    return null;
+    if (key.hasDefaultValue) return key.sampleValue as ReturnType;
+    return null as ReturnType;
   }
 
   return key.fromStorage(result) as T;
