@@ -1,3 +1,7 @@
+## [3.1.0] - 2023-12-20
+
+- `getItem()` now returns non-nullable type if used with a `LocalKey` that has `useDefaultValue: true` #5
+
 ## [3.0.0] - 2023-05-31
 
 - Improve tree shaking with webpack (https://webpack.js.org/guides/tree-shaking/)
